@@ -47,4 +47,31 @@ router.get('/users/:user_id', function (req, res, next) {
   })
 })
 
+// update a user
+router.put('/users/:user_id', function (req, res, next) {
+  User.findById(req.params.user_id, function (err, user) {
+    if (err) {
+      return next(err)
+    }
+
+    if (req.body.name) {
+      user.name = req.body.name
+    }
+    if (req.body.username) {
+      user.username = req.body.username
+    }
+    if (req.body.password) {
+      user.password = req.body.password
+    }
+
+    user.save(function (err) {
+      if (err) {
+        return next(err)
+      }
+
+      res.json({ message: 'User information successfully updated!' })
+    })
+  })
+})
+
 module.exports = router
