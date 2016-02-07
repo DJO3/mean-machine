@@ -8,6 +8,7 @@ require('./app/models/user')
 mongoose.connect('mongodb://localhost:27017/mean-machine')
 
 /* routes */
+var indexRoute = require('./app/routes/index')
 var apiRoute = require('./app/routes/api')
 
 /* init app */
@@ -30,6 +31,7 @@ app.use(function (req, res, next) {
 })
 
 /* register routes */
+app.use('/', indexRoute)
 app.use('/api', apiRoute)
 
 // catch 404 and forward to error handler
