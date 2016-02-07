@@ -18,17 +18,7 @@ router.post('/users', function (req, res, next) {
 
   user.save(function (err) {
     if (err) {
-      // Does the username already exist?
-      if (err.code === 11000) {
-        return res.status(409).json(
-          { success: false, error: 'Username already exists!' }
-        )
-      }
-      // Are any required keys missing?
-      if (err.name === 'ValidationError') {
-        return res.status(403).json({success: false, error: err})
-      }
-      return res.json(err)
+      return next(err)
     }
 
     res.json({ message: 'User successfully created!' })
@@ -39,10 +29,21 @@ router.post('/users', function (req, res, next) {
 router.get('/users', function (req, res, next) {
   User.find(function (err, users) {
     if (err) {
-      return res.json({ error: err })
+      return next(err)
     }
 
-    res.json({ message: users })
+    res.json(users)
+  })
+})
+
+// get a user
+router.get('/users/:user_id', function (req, res, next) {
+  User.findById(req.params.user_id, function (err, user) {
+    if (err) {
+      return next(err)
+    }
+
+    res.json(user)
   })
 })
 
