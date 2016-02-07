@@ -3,10 +3,12 @@ var router = express.Router()
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
 
+// get root
 router.get('/', function (req, res, next) {
   res.json({ message: 'This is the root of API' })
 })
 
+// post new user
 router.post('/users', function (req, res, next) {
   var user = new User()
 
@@ -30,6 +32,17 @@ router.post('/users', function (req, res, next) {
     }
 
     res.json({ message: 'User successfully created!' })
+  })
+})
+
+// get all users
+router.get('/users', function (req, res, next) {
+  User.find(function (err, users) {
+    if (err) {
+      return res.json({ error: err })
+    }
+
+    res.json({ message: users })
   })
 })
 
